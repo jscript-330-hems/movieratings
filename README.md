@@ -1,6 +1,10 @@
 # movieratings
 Javascript 330 Final Project - Movie Ratings
 
+# Project Description
+For our final project, our group aims to create a comprehensive platform that optimizes movie viewers’ experiences and movie theaters’ showings. Our API will allow moviegoers to search for movies by name or genre, see where movies are playing by zip code, and leave reviews for movies they have viewed. Through our API, moviegoers will be able to make better decisions when choosing what movies to watch. In addition to being a tool for the audience, theaters will be able to add movies, analyze the reviews of the movies they are showing, and remove reviews. Theaters will be able to refine their movie selection based on the reviews left by viewers. In sum, our API allows viewers to have a more curated experience at movie theaters, while giving theaters a better idea of how to appeal to their audiences. 
+
+
 # Routes
 The following are the proposed routes we intend to implement.  Others had been considered to support updating reviews and theaters and may be added as time permits.
 
