@@ -8,6 +8,8 @@ For our final project, our group aims to create a comprehensive platform that op
 # Routes
 The following are the proposed routes we intend to implement.  Others had been considered to support updating reviews and theaters and may be added as time permits.
 
+## Movies
+
 | METHOD | ROUTE                | DESCRIPTION                                                                                                         |
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | GET    | /movies              | Displays list of all movies and aggregated data (average reviews, review count)                                     |
@@ -19,7 +21,7 @@ The following are the proposed routes we intend to implement.  Others had been c
 | DELETE | /movies/:id <span style="color:red">*</span>        | Deletes a movie                                                                                                     |
 
 
-# Theaters
+## Theaters
 
 | METHOD | ROUTE                | DESCRIPTION                                                                                                         |
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -29,7 +31,7 @@ The following are the proposed routes we intend to implement.  Others had been c
 | POST   | /theaters <span style="color:red">*</span>          | Creates a theater                                                                                                    |
 
 
-# Reviews
+## Reviews
 
 | METHOD | ROUTE                | DESCRIPTION                                                                                                         |
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -38,7 +40,7 @@ The following are the proposed routes we intend to implement.  Others had been c
 | DELETE | /reviews/:id <span style="color:red">**</span>      | Deletes a specified review                                                                                           |
 
 
-# Login
+## Login
 
 | METHOD | ROUTE                | DESCRIPTION                                                                                                         |
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
