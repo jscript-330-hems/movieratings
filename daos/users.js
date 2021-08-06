@@ -16,6 +16,10 @@ module.exports.getUser = async (email) => {
     return await User.findOne({ email }).lean()
 }
 
+module.exports.getUserById = async (_id) => {
+    return await User.findOne({ _id }).lean()
+}
+
 module.exports.updateUserPassword = async (userId, password) => {
     try {
         await User.updateOne( { _id: userId }, { $set: { password } } )

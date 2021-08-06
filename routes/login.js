@@ -1,13 +1,11 @@
 const { Router } = require("express")
 const router = Router()
 const bcrypt = require("bcrypt")
-const { isAuthorized, SECRET_TOKEN } = require('../middleware/auth')
-const { handleErrors } = require('../middleware/errorhandler')
-const userDAO = require('../daos/users')
-const jwt = require('jsonwebtoken')
-
-// TODO:  Make changes to make sure this works for our project.
-// This was just copied from a previous assignment.
+const { isAuthorized, SECRET_TOKEN } = require("../middleware/auth")
+const { handleErrors } = require("../middleware/errorhandler")
+const userDAO = require("../daos/users")
+const tokenDAO = require("../daos/token")
+const jwt = require("jsonwebtoken")
 
 router.post("/signup", async (req, res, next) => {
     const { email, password } = req.body
@@ -58,13 +56,18 @@ router.post("/", async (req, res, next) => {
                 res.sendStatus(401)
             }
             if (bcryptRes) {
-                jwt.sign({
-                    email: foundUser.email,
-                    roles: foundUser.roles,
-                    _id: foundUser._id
-                }, SECRET_TOKEN, (err, token) => {
-                    res.json({token})
-                });
+
+                const tokenString = await tokenDAO.getTokenForUserId(foundUser._id.toHexString());
+                const tokenToSave = { tokenString };
+                const createdToken = jwt.sign(tokenToSave, SECRET_TOKEN);
+                res.status(200).send({token: createdToken});
+                // jwt.sign({
+                //     email: foundUser.email,
+                //     roles: foundUser.roles,
+                //     _id: foundUser._id
+                // }, SECRET_TOKEN, (err, token) => {
+                //     res.json({token})
+                // });
             }
             else {
                 res.sendStatus(401)
@@ -76,11 +79,12 @@ router.post("/", async (req, res, next) => {
     }
 })
 
-router.post("/logout", async (req, res, next) => {
-    res.sendStatus(404);
-})
-
 router.use(isAuthorized);
+
+router.post("/logout", async (req, res, next) => {
+    await tokenDAO.removeToken(req.tokenString);
+    res.sendStatus(200);
+})
 
 router.post("/password", async (req, res, next) => {
     try {
