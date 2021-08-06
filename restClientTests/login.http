@@ -1,0 +1,50 @@
+# To run these tests, use the REST Client VS Code plugin.
+# More info here: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+POST http://localhost:5000/login/signup
+Content-Type: application/json
+
+{
+    "email": "mike@hems.com",
+    "password": "PW123"
+}
+
+###
+
+# Should be able to log in with user just created
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "mike@hems.com",
+    "password": "PW123"
+}
+
+###
+
+# Bad password
+POST http://localhost:5000/login
+content-type: application/json
+
+{
+    "email": "mike@hems.com",
+    "password": "BadPW"
+}
+
+
+###
+# Should fail if no token is included
+POST http://localhost:5000/login/logout
+
+###
+POST http://localhost:5000/login/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblN0cmluZyI6IjllMjQwYmE0LWNmOWYtNDhmOS05MDhiLTJkNjc0MzA1ZjIzZCIsImlhdCI6MTYyODI1NjgxMH0.T1hL6kvOu-9hathvTELqyoCZNx8XCtR5guXGuvlAyeQ
+
+###
+POST http://localhost:5000/login/password
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblN0cmluZyI6IjllMjQwYmE0LWNmOWYtNDhmOS05MDhiLTJkNjc0MzA1ZjIzZCIsImlhdCI6MTYyODI1NjgxMH0.T1hL6kvOu-9hathvTELqyoCZNx8XCtR5guXGuvlAyeQ
+
+{
+    "password": "PW1234"
+}

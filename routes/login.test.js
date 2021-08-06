@@ -1,6 +1,5 @@
   
 const request = require("supertest");
-var jwt = require('jsonwebtoken');
 
 const server = require("../server");
 const testUtils = require('../test-utils');
@@ -38,9 +37,9 @@ describe("/login", () => {
     });
 
     describe("POST /logout", () => {
-      it("should return 404", async () => {
+      it("should return 401", async () => {
         const res = await request(server).post("/login/logout").send();
-        expect(res.statusCode).toEqual(404);
+        expect(res.statusCode).toEqual(401);
       });
     });
   });
@@ -60,7 +59,7 @@ describe("/login", () => {
         });
         expect(res.statusCode).toEqual(400);
       });
-      it("should return 200 and with a password", async () => {
+      it("should return 200 with a password", async () => {
         const res = await request(server).post("/login/signup").send(user1);
         expect(res.statusCode).toEqual(200);
       });
@@ -74,12 +73,12 @@ describe("/login", () => {
         await request(server).post("/login/signup").send(user0);
         const users = await User.find().lean();
         users.forEach((user) => {
-          expect(Object.values(user).includes(user0.password)).toBe(false);
+          expect(Object.values(user)).not.toContain(user0.password);
         });
       });
     });
   });
-  describe.each([user0, user1])("User %#", (user) => {
+  describe.each([user0, user1])("User %# after signup", (user) => {
     beforeEach(async () => {
       await request(server).post("/login/signup").send(user0);
       await request(server).post("/login/signup").send(user1);
@@ -111,15 +110,6 @@ describe("/login", () => {
         users.forEach((user) => {
           expect(Object.values(user)).not.toContain(token);
         });
-      });
-      it("should return a JWT with user email, _id, and roles inside, but not password", async () => {
-        const res = await request(server).post("/login").send(user);
-        const token = res.body.token;
-        const decodedToken = jwt.decode(token);
-        expect(decodedToken.email).toEqual(user.email);
-        expect(decodedToken.roles).toEqual(['user']);
-        expect(decodedToken._id).toMatch(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i) // mongo _id regex
-        expect(decodedToken.password).toBeUndefined();
       });
     });
   });
@@ -183,6 +173,49 @@ describe("/login", () => {
         expect(loginRes1.statusCode).toEqual(200);
       });
      
+    });
+    describe("POST /logout", () => {
+      it("should reject bogus token", async () => {
+        const res = await request(server)
+          .post("/login/logout")
+          .set('Authorization', 'Bearer BAD')
+          .send();
+        expect(res.statusCode).toEqual(401);
+      });
+      it("should prevent only user0 from making a password change", async () => {
+        const res = await request(server)
+          .post("/login/logout")
+          .set('Authorization', 'Bearer ' + token0)
+          .send();
+        expect(res.statusCode).toEqual(200);
+        const res0 = await request(server)
+          .post("/login/password")
+          .set('Authorization', 'Bearer ' + token0)
+          .send({ password: '123' });
+        expect(res0.statusCode).toEqual(401);
+        const res1 = await request(server)
+          .post("/login/password")
+          .set('Authorization', 'Bearer ' + token1)
+          .send({ password: '123' });
+        expect(res1.statusCode).toEqual(200);
+      });
+      it("should prevent only user1 from making a password change", async () => {
+        const res = await request(server)
+          .post("/login/logout")
+          .set('Authorization', 'Bearer ' + token1)
+          .send();
+        expect(res.statusCode).toEqual(200);
+        const res0 = await request(server)
+          .post("/login/password")
+          .set('Authorization', 'Bearer ' + token0)
+          .send({ password: '123' });
+        expect(res0.statusCode).toEqual(200);
+        const res1 = await request(server)
+          .post("/login/password")
+          .set('Authorization', 'Bearer ' + token1)
+          .send({ password: '123' });
+        expect(res1.statusCode).toEqual(401);
+      });
     });
   });
 });
