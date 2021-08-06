@@ -1,11 +1,10 @@
 const { Router } = require("express")
 const router = Router()
 const bcrypt = require("bcrypt")
-const { isAuthorized, SECRET_TOKEN } = require("../middleware/auth")
+const { isAuthorized } = require("../middleware/auth")
 const { handleErrors } = require("../middleware/errorhandler")
 const userDAO = require("../daos/users")
 const tokenDAO = require("../daos/token")
-const jwt = require("jsonwebtoken")
 
 router.post("/signup", async (req, res, next) => {
     const { email, password } = req.body
@@ -56,18 +55,8 @@ router.post("/", async (req, res, next) => {
                 res.sendStatus(401)
             }
             if (bcryptRes) {
-
                 const tokenString = await tokenDAO.getTokenForUserId(foundUser._id.toHexString());
-                const tokenToSave = { tokenString };
-                const createdToken = jwt.sign(tokenToSave, SECRET_TOKEN);
-                res.status(200).send({token: createdToken});
-                // jwt.sign({
-                //     email: foundUser.email,
-                //     roles: foundUser.roles,
-                //     _id: foundUser._id
-                // }, SECRET_TOKEN, (err, token) => {
-                //     res.json({token})
-                // });
+                res.status(200).send({ token: tokenString });
             }
             else {
                 res.sendStatus(401)
