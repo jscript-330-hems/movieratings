@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
     "email": "mike@hems.com",
-    "password": "PW123"
+    "password": "PW1234"
 }
 
 ###
@@ -38,12 +38,12 @@ POST http://localhost:5000/login/logout
 
 ###
 POST http://localhost:5000/login/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblN0cmluZyI6IjllMjQwYmE0LWNmOWYtNDhmOS05MDhiLTJkNjc0MzA1ZjIzZCIsImlhdCI6MTYyODI1NjgxMH0.T1hL6kvOu-9hathvTELqyoCZNx8XCtR5guXGuvlAyeQ
+Authorization: Bearer f4ebdfd8-ca5c-44d7-9667-efa837dc9284
 
 ###
 POST http://localhost:5000/login/password
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlblN0cmluZyI6IjllMjQwYmE0LWNmOWYtNDhmOS05MDhiLTJkNjc0MzA1ZjIzZCIsImlhdCI6MTYyODI1NjgxMH0.T1hL6kvOu-9hathvTELqyoCZNx8XCtR5guXGuvlAyeQ
+Authorization: Bearer 161ce6a9-92a1-4731-a844-d9c2a94b6dfc
 
 {
     "password": "PW1234"
