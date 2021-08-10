@@ -12,23 +12,75 @@ module.exports.create = async (movieObj) => {
   }
 }
 
-// To be updated with aggregation later
 module.exports.getMovieById = async (movieId) => {
   if (!mongoose.Types.ObjectId.isValid(movieId)) {
     return null;
   } else {
     try {
-      return await Movie.findOne({ _id: movieId }).lean();
+      const movieDetail = await Movie.aggregate([
+        { $match: { _id: mongoose.Types.ObjectId(movieId) }},
+        { $lookup: {
+            from: 'reviews',
+            localField: '_id',
+            foreignField: 'movieId',
+            as: 'reviews'
+        }},
+        { $unwind: { path: '$reviews', preserveNullAndEmptyArrays: true } },
+        { $group: {
+            _id: '$movieId',
+            title: { $first: '$title' },
+            actors: { $first: '$actors' },
+            synopsis: { $first: '$synopsis' },
+            releaseYear: { $first: '$releaseYear' },
+            rating: { $first: '$rating' },
+            moviePicUrl: { $first: '$moviePicUrl' },
+            reviewCount: { $sum: 1 },
+            averageScore: { $avg: '$reviews.score' }
+        }},
+        { $project : { _id: 0 }}
+      ]);
+
+      if (!movieDetail[0].averageScore) {
+        movieDetail[0].reviewCount = movieDetail[0].averageScore = 0;
+      }
+        
+      return movieDetail[0];
+      
     } catch (e) {
       throw e;
     }
   }
 }
 
-// To be updated with aggregation later
 module.exports.getAllMovies = async (page, perPage) => {
   try {
-    return await Movie.find().limit(perPage).skip(perPage*page).lean();
+    const movieDetail = await Movie.aggregate([
+        { $lookup: {
+            from: 'reviews',
+            localField: '_id',
+            foreignField: 'movieId',
+            as: 'reviews'
+        }},
+        { $unwind: { path: '$reviews', preserveNullAndEmptyArrays: true } },
+        { $group: {
+            _id: '$_id',
+            title: { $first: '$title' },
+            actors: { $first: '$actors' },
+            synopsis: { $first: '$synopsis' },
+            releaseYear: { $first: '$releaseYear' },
+            rating: { $first: '$rating' },
+            moviePicUrl: { $first: '$moviePicUrl' },
+            reviewCount: { $sum: 1 },
+            averageScore: { $avg: '$reviews.score' }
+        }},
+        { $project : { _id: 0 }}
+      ]).limit(perPage).skip(perPage*page);
+      for (let i = 0; i < movieDetail.length; i++) {
+        if (!movieDetail[i].averageScore) {
+            movieDetail[i].reviewCount = movieDetail[i].averageScore = 0;
+        }
+      }
+      return movieDetail;
   } catch (e) {
     throw e;
   }
