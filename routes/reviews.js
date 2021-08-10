@@ -3,6 +3,7 @@ const router = Router()
 
 const reviewsDAO = require('../daos/reviews');
 const { isAuthorized, isAdmin } =  require('../middleware/auth');
+const { handleErrors } = require('../middleware/errorhandler');
 
 // GET	/reviews/movie/:id
 router.get("/movie/:id", async (req, res, next) => {
@@ -20,9 +21,7 @@ router.post("/", isAuthorized, async (req, res, next) => {
   const review = req.body;
   try {
     const reviewCreated = await reviewsDAO.createReview(review);
-    if (reviewCreated) {
-      res.sendStatus(success ? 200 : 400);
-    }
+    res.json(reviewCreated);
   } catch (e) {
     next(e);
   }
@@ -66,6 +65,6 @@ router.delete("/:id", isAuthorized, isAdmin, async (req, res, next) => {
 });
 
 // Error
-router.use(errorHandler);
+router.use(handleErrors);
 
 module.exports = router
