@@ -7,3 +7,4 @@ router.use("/theaters", require('./theaters'));
 router.use("/reviews", require('./reviews'));
 
 module.exports = router;
+
