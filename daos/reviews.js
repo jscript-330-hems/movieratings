@@ -1,27 +1,30 @@
-const User = require('../models/user')
+const mongoose = require('mongoose');
+const Review = require('../models/review')
 
 module.exports = {}
 
-module.exports.createUser = async (userObj) => {
-    if (!userObj.roles)
-        userObj.roles = ["user"];
-    else if (!userObj.roles.contains("user"))
-        userObj.roles.push("user");
-
-    const user = await User.create(userObj)
-    return user
+module.exports.createReview = async (review) => {
+  return await Review.create(review)
 }
 
-module.exports.getUser = async (email) => {
-    return await User.findOne({ email }).lean()
+module.exports.getReview = async (movieId) => {
+  return await Review.find({ movieId }).lean()
 }
 
-module.exports.updateUserPassword = async (userId, password) => {
-    try {
-        await User.updateOne( { _id: userId }, { $set: { password } } )
-        return true
-    }
-    catch (e) {
-        res.status(500).send(e.message)
-    }
+module.exports.updateReview = async (reviewId, review) => {
+  try {
+    await Review.updateOne( { reviewId }, review );
+    return true
+  }
+  catch (e) {
+    throw e
+  }
+}
+
+module.exports.deleteReview = async (reviewId) => {
+  if (!mongoose.Types.ObjectId.isValid({ reviewId })) {
+    return false
+  }
+  await Review.deleteOne({ reviewId });
+  return true
 }

@@ -15,9 +15,9 @@ The following are the proposed routes we intend to implement.  Others had been c
 | METHOD | ROUTE                | DESCRIPTION                                                                                                         |
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | GET    | /movies              | Displays list of all movies and aggregated data (average reviews, review count)                                     |
-| GET    | /movies/theaters/:id | Displays a list of theaters that are playing the specified movie                                                    |
-| GET    | /movies:id           | Displays details for a specified movie and aggregated data (average reviews, review count)                          |
-| GET    | /movies?search       | Displays a list of movies where the search term appears in the movie title, genre, actor names, or movie synopsis.  |
+| GET    | /movies/:id/theaters | Displays a list of theaters that are playing the specified movie                                                    |
+| GET    | /movies/:id           | Displays details for a specified movie and aggregated data (average reviews, review count)                          |
+| GET    | /movies/search?query       | Displays a list of movies where the search term appears in the movie title, genre, actor names, or movie synopsis.  |
 | POST   | /movies <span style="color:red">*</span>            | Creates a movie                                                                                                     |
 | PUT    | /movies/:id <span style="color:red">*</span>        | Updates a movie                                                                                                     |
 | DELETE | /movies/:id <span style="color:red">*</span>        | Deletes a movie                                                                                                     |

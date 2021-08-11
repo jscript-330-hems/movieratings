@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
-  // password:  { type: String, required: true},
-  // email: { type: String, unique: true, required: true},
-  // roles: { type: [String], required: true }
+  movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'movie', required: true },
+  score: { type: Number, required: true },
+  review: { type: String, required: true }
 });
-
 
 module.exports = mongoose.model("reviews", reviewSchema);
