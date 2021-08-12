@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const port = process.env.PORT || 5000;
 
 
-mongoose.connect(DB_HOST, {
+mongoose.connect($DB_HOST, {
   useNewUrlParser: true, 
   useCreateIndex: true, 
   useUnifiedTopology: true,
