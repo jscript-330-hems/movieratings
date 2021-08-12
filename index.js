@@ -1,10 +1,12 @@
 const server = require("./server");
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const port = process.env.PORT || 5000;
 
 
-mongoose.connect($DB_HOST, {
+mongoose.connect(process.env.DB_HOST, {
   useNewUrlParser: true, 
   useCreateIndex: true, 
   useUnifiedTopology: true,
