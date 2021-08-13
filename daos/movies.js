@@ -129,8 +129,22 @@ module.exports.getTheaterByMovieId = async (movieId) => {
     return null;
   } else {
     try {
-      // Aggregation TBD
-      return;
+      const theaterInfo = await Movie.aggregate([
+        { $match: { _id: mongoose.Types.ObjectId(movieId) }},
+        { $lookup: { 
+          from: 'theaters',
+          localField: '_id',
+          foreignField: 'movies',
+          as: 'theaterInfo'
+        }},
+        { $unwind: '$theaterInfo' },
+        { $group: { 
+          _id: '$theaterInfo._id', 
+          name: { $first: '$theaterInfo.name' },
+          zip: { $first: '$theaterInfo.zip' }
+        }}
+    ]);
+    return theaterInfo;
     } catch (e) {
       throw e;
     }
