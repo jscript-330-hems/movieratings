@@ -1,10 +1,10 @@
-const uuid = require('uuid')
+const { uuid } = require('uuidv4');
 const Token = require('../models/token')
 
 module.exports = {}
 
 module.exports.getTokenForUserId = async (userId) => {
-    const token = await Token.create({ tokenString: uuid.v4(), userId })
+    const token = await Token.create({ tokenString: uuid(), userId })
     return token.tokenString
 }
 
