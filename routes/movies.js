@@ -7,8 +7,16 @@ const { handleErrors } = require('../middleware/errorhandler');
 
 // Read - Single movie in theaters
 router.get("/:id/theaters", async (req, res, next) => {
-  //TBD
-  next();
+  try {
+    const theater = await movieDAO.getTheaterByMovieId(req.params.id);
+    if (theater) {
+      res.json(theater);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (e) {
+    next(e);
+  }
 });
 
 // Read - search
@@ -81,7 +89,7 @@ router.delete("/:id", isAuthorized, async (req, res, next) => {
       const deleted = await movieDAO.deleteMovieById(req.params.id);
       res.sendStatus(deleted ? 200 : 400);
     } catch(e) {
-      res.status(500).send(e.message);
+      next(e);
     }
   });
 
