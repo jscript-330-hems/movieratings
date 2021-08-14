@@ -56,7 +56,7 @@ router.post("/", async (req, res, next) => {
             }
             if (bcryptRes) {
                 const tokenString = await tokenDAO.getTokenForUserId(foundUser._id.toHexString());
-                res.status(200).send({ token: tokenString });
+                res.status(200).send({ token: tokenString, roles: foundUser.roles });
             }
             else {
                 res.sendStatus(401)
