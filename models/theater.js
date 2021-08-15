@@ -6,5 +6,6 @@ const theaterSchema = new mongoose.Schema({
   zip: { type: Number, required: true }
 });
 
+theaterSchema.index({ zip: 'text' });
 
 module.exports = mongoose.model("theaters", theaterSchema);
