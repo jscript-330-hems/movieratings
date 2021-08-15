@@ -37,7 +37,7 @@ The following are the proposed routes we intend to implement.  Others had been c
 
 | METHOD | ROUTE                | DESCRIPTION                                                                                                         |
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| GET    | /reviews?movieid     | Displays reviews for specified movie                                                                                 |
+| GET    | /reviews/movie/:id     | Displays reviews for specified movie                                                                                 |
 | POST   | /reviews/:id         | Creates a review for a specified movie                                                                               |
 | DELETE | /reviews/:id <span style="color:red">**</span>      | Deletes a specified review                                                                                           |
 
