@@ -16,17 +16,21 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// Get theaters by movie ID
-router.get('/:id', async (req, res, next) => {
+// Get movies by theater id 
+router.get('/:id/movies', async (req, res, next) => {
   try {
-    const theaters = await theaterDAO.getTheaterById(req.params.id);
-    res.json(theaters);
+    const movies = await theaterDAO.getMoviesByTheaterId(req.params.id);
+    if (movies) {
+      res.json(movies);
+    } else {
+      res.status(404).send('Theater not found');
+    }
   } catch (e) {
     next(e);
   }
 })
 
-// Get theaters by zip code (query?)
+// Get theaters by zip code
 router.get('/search', async (req, res, next) => {
   try {
     let { page, perPage, query } = req.query;
@@ -39,23 +43,65 @@ router.get('/search', async (req, res, next) => {
   }
 })
 
-router.use(isAuthorized); // Not sure if this should be included - do we only want users who log into be able to access theaters?
+router.use(isAuthorized);
 
 // Create theater (admin privileges required)
 router.post('/', isAdmin, async (req, res, next) => {
   const theater = req.body;
+  const isAdmin = req.user.isAdmin;
   if (!theater || JSON.stringify(theater) === '{}') {
     res.status(400).send('Theater is required');
   } else {
       try {
-        const savedTheater = await theaterDAO.createTheater(theater);
-        res.json(savedTheater);
+        if (isAdmin) {
+          const savedTheater = await theaterDAO.createTheater(theater);
+          res.json(savedTheater); 
+        } else {
+          res.status(403).send('Unauthorized');
+        }
       } catch (e) {
         next(e);
       } 
   }
-  
+})
+
+// Update theater (admin privileges required)
+router.put('/:id', isAdmin, async (req, res, next) => {
+  const theaterId = req.params.id;
+  const isAdmin = req.user.isAdmin;
+  try {
+    if (isAdmin) { 
+      const updatedTheater = await theaterDAO.updateTheaterById(theaterId, req.body);
+      if (updatedTheater) {
+        res.status(200).send('Successfully updated');
+      } else {
+        res.sendStatus(400);
+      }
+    } else {
+      res.status(403).send('Unauthorized');
+    }
+  } catch (e) {
+    next(e);
+  }
+})
+
+// Delete theater (admin privileges required)
+router.delete('/:id', isAdmin, async (req, res, next) => {
+  const isAdmin = req.user.isAdmin;
+  try { 
+    if (isAdmin) {  
+      const theater = await theaterDAO.deleteTheaterById(req.params.id);
+      if (theater) {
+        res.status(200).send('Successfully deleted');
+      } else {
+        res.sendStatus(400);
+      }
+    } else {
+      res.status(403).send('Unauthorized');
+    }
+  } catch (e) {
+    next(e);
+  }
 })
 
 module.exports = router
-
