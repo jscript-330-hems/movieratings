@@ -7,51 +7,50 @@ module.exports.getAllTheaters = async () => {
     return await Theater.find().lean();
 }
 
-module.exports.getTheaterById = async (movieId) => {
+
+module.exports.getMoviesByTheaterId = async (theaterId) => {
     try {
-        const theaterInfo = await Theater.aggregate([
-            { $match: { _id: mongoose.Types.ObjectId(movieId) }},
-            { $unwind: '$movies' },
+        const moviesInfo = await Theater.aggregate([
+            { $match: { _id: mongoose.Types.ObjectId(theaterId) }},
+            { $unwind: '$movies'},
             { $lookup: { 
-            from: 'movies',
-            localField: 'movies',
-            foreignField: '_id',
-            as: 'movieInfo'
+                from: 'movies',
+                localField: 'movies',
+                foreignField: '_id',
+                as: 'movieInfo'
             }},
             { $unwind: '$movieInfo' },
             { $group: { 
-            _id: '$_id', 
-            name: '$name',
-            movies: { $push: '$movieInfo' }, 
-            zip: { $first: '$zip' }}},
-            { $project: { 
-            _id: 0,
-            movies: { __v: 0, _id: 0 }
+                _id: '$movieInfo._id', 
+                title: { $first: '$movieInfo.title' },
+                actors: { $first: '$movieInfo.actors' }, 
+                genre: { $first: '$movieInfo.genre' },
+                synopsis: { $first: '$movieInfo.synopsis' },
+                rating: { $first: '$movieInfo.rating' },
+                releaseYear: { $first: '$movieInfo.releaseYear' },
+                moviePicUrl: { $first: '$movieInfo.moviePicUrl' }
             }}
         ]);
-        return theaterInfo[0];
+        return moviesInfo;
         }
     catch (e) {
-        return null;
+        throw e;
     }
 }
 
 module.exports.searchByZip = async (page, perPage, query) => {
     try {
-        if(query) {
-            return await Theater.find(
-                { $text: { $search: query } },
-                { score: { $meta: 'textScore' } })
-                .sort({ score: { $meta: 'textScore' }}).limit(perPage).skip(perPage*page).lean();
+        if (query) {
+            return await Theater.find({ $text: { $search: query } }, { score: { $meta: 'textScore' }}).sort({ score: { $meta: 'textScore' }}).limit(perPage).skip(perPage*page).lean();
         } else {
             return await Theater.find().limit(perPage).skip(perPage*page).lean();
         } 
     } catch (e) {
-        return null;
+        throw e;
     }
 }
 
-module.exports.create = async (theaterData) => {
+module.exports.createTheater = async (theaterData) => {
     try {
         return await Theater.create(theaterData);
     } catch (e) {
@@ -60,4 +59,12 @@ module.exports.create = async (theaterData) => {
         }
         throw e;
     }
+}
+
+module.exports.updateTheaterById = async (theaterId, newObj) =>  {
+    return await Theater.updateOne({ _id: theaterId }, newObj);
+}
+
+module.exports.deleteTheaterById = async (theaterId) => {
+    return await Theater.deleteOne({ _id: theaterId });
 }

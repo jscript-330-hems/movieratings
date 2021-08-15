@@ -7,7 +7,8 @@ const movieSchema = new mongoose.Schema({
   synopsis: { type: String, required: true },
   rating: { type: String, required: true },
   releaseYear: { type: Number, required: true },
-  moviePicUrl: { type: String }
+  moviePicUrl: { type: String },
+  theaters: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'theaters' }] }
 });
 
 movieSchema.index({ title: 'text', genre: 'text', synopsis: 'text' });
