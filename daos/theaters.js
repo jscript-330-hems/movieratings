@@ -11,26 +11,26 @@ module.exports.getAllTheaters = async () => {
 module.exports.getMoviesByTheaterId = async (theaterId) => {
     try {
         const moviesInfo = await Theater.aggregate([
-            { $match: { _id: mongoose.Types.ObjectId(theaterId) }},
-            { $lookup: { 
+            { $match: {
+                _id: new mongoose.Types.ObjectId(theaterId)
+            }}, 
+            { $unwind: {
+                path: '$movies'
+            }}, 
+            { $lookup: {
                 from: 'movies',
-                localField: '_id',
-                foreignField: 'theaters',
-                as: 'movieInfo'
+                localField: 'movies',
+                foreignField: '_id',
+                as: 'movie'
             }},
-            { $unwind: '$movieInfo' },
-            { $group: { 
-                _id: '$movieInfo._id', 
-                //movies: { $push: '$movieInfo' },
-                title: { $first: '$movieInfo.title' },
-                actors: { $first: '$movieInfo.actors' }, 
-                genre: { $first: '$movieInfo.genre' },
-                synopsis: { $first: '$movieInfo.synopsis' },
-                rating: { $first: '$movieInfo.genre' },
-                releaseYear: { $first: '$movieInfo.releaseYear' },
-                moviePicUrl: { $first: '$movieInfo.moviePicUrl' }
+            { $unwind: {
+                path: '$movie'
+            }}, 
+            { $project: {
+                movies: 0,
+                __v: 0
             }}
-        ]);
+          ]);
         return moviesInfo;
         }
     catch (e) {
