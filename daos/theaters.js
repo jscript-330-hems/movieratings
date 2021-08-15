@@ -12,21 +12,21 @@ module.exports.getMoviesByTheaterId = async (theaterId) => {
     try {
         const moviesInfo = await Theater.aggregate([
             { $match: { _id: mongoose.Types.ObjectId(theaterId) }},
+            { $unwind: '$movies'},
             { $lookup: { 
                 from: 'movies',
-                localField: '_id',
-                foreignField: 'theaters',
+                localField: 'movies',
+                foreignField: '_id',
                 as: 'movieInfo'
             }},
             { $unwind: '$movieInfo' },
             { $group: { 
                 _id: '$movieInfo._id', 
-                //movies: { $push: '$movieInfo' },
                 title: { $first: '$movieInfo.title' },
                 actors: { $first: '$movieInfo.actors' }, 
                 genre: { $first: '$movieInfo.genre' },
                 synopsis: { $first: '$movieInfo.synopsis' },
-                rating: { $first: '$movieInfo.genre' },
+                rating: { $first: '$movieInfo.rating' },
                 releaseYear: { $first: '$movieInfo.releaseYear' },
                 moviePicUrl: { $first: '$movieInfo.moviePicUrl' }
             }}
