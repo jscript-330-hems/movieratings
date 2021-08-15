@@ -72,8 +72,7 @@ module.exports.getAllMovies = async (page, perPage) => {
             moviePicUrl: { $first: '$moviePicUrl' },
             reviewCount: { $sum: 1 },
             averageScore: { $avg: '$reviews.score' }
-        }},
-        { $project : { _id: 0 }}
+        }}
       ]).limit(perPage).skip(perPage*page);
       for (let i = 0; i < movieDetail.length; i++) {
         if (!movieDetail[i].averageScore) {
