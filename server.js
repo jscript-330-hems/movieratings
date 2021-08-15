@@ -7,6 +7,7 @@ server.use(express.json());
 
 server.use(cors());
 server.use(routes);
+server.use(express.static('static'));
 
 module.exports = server;
 
