@@ -1,1 +1,5 @@
 GET http://localhost:5000/movies?perPage=10
+
+###
+
+GET mongodb+srv://hems:hdjhmVi7esVA@cluster21.0hrdz.mongodb.net/movieratings?retryWrites=true&w=majority/movies?perPage=10
