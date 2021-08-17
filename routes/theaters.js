@@ -48,17 +48,12 @@ router.use(isAuthorized);
 // Create theater (admin privileges required)
 router.post('/', isAdmin, async (req, res, next) => {
   const theater = req.body;
-  const isAdmin = req.user.isAdmin;
   if (!theater || JSON.stringify(theater) === '{}') {
     res.status(400).send('Theater is required');
   } else {
       try {
-        if (isAdmin) {
-          const savedTheater = await theaterDAO.createTheater(theater);
-          res.json(savedTheater); 
-        } else {
-          res.status(403).send('Unauthorized');
-        }
+        const savedTheater = await theaterDAO.createTheater(theater);
+        res.json(savedTheater); 
       } catch (e) {
         next(e);
       } 
@@ -68,18 +63,13 @@ router.post('/', isAdmin, async (req, res, next) => {
 // Update theater (admin privileges required)
 router.put('/:id', isAdmin, async (req, res, next) => {
   const theaterId = req.params.id;
-  const isAdmin = req.user.isAdmin;
   try {
-    if (isAdmin) { 
       const updatedTheater = await theaterDAO.updateTheaterById(theaterId, req.body);
       if (updatedTheater) {
         res.status(200).send('Successfully updated');
       } else {
         res.sendStatus(400);
       }
-    } else {
-      res.status(403).send('Unauthorized');
-    }
   } catch (e) {
     next(e);
   }
@@ -87,17 +77,12 @@ router.put('/:id', isAdmin, async (req, res, next) => {
 
 // Delete theater (admin privileges required)
 router.delete('/:id', isAdmin, async (req, res, next) => {
-  const isAdmin = req.user.isAdmin;
   try { 
-    if (isAdmin) {  
-      const theater = await theaterDAO.deleteTheaterById(req.params.id);
-      if (theater) {
-        res.status(200).send('Successfully deleted');
-      } else {
-        res.sendStatus(400);
-      }
+    const theater = await theaterDAO.deleteTheaterById(req.params.id);
+    if (theater) {
+      res.status(200).send('Successfully deleted');
     } else {
-      res.status(403).send('Unauthorized');
+      res.sendStatus(400);
     }
   } catch (e) {
     next(e);
