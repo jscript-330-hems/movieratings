@@ -21,6 +21,9 @@ async function isAuthorized (req, res, next) {
         
         req.tokenString = tokenFromClient;
         req.user = user;
+        if (req.user.roles.includes("admin")) {
+            req.user.isAdmin = true
+        }        
 
         next()
     }
@@ -31,8 +34,9 @@ async function isAuthorized (req, res, next) {
 }
 
 async function isAdmin (req, res, next) {
-    if (req.user.roles.includes("admin")) {
-        req.user.isAdmin = true
+    if (!req.user.isAdmin) {
+        res.sendStatus(403);
+        return;
     }
     next()
 }
