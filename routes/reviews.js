@@ -10,7 +10,11 @@ router.get("/movie/:id", async (req, res, next) => {
   const movieId = req.params.id;
   try {
     const reviews = await reviewsDAO.getReview(movieId);
-    res.json(reviews);
+    if (reviews) {
+      res.json(reviews);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (e) {
     next(e);
   }
@@ -32,9 +36,7 @@ router.delete("/:id", isAuthorized, isAdmin, async (req, res, next) => {
   const reviewId = req.params.id;
   try {
     const reviewDeleted = await reviewsDAO.deleteReview(reviewId);
-    if (reviewDeleted) {
-      res.sendStatus(success ? 200 : 400);
-    }
+    res.sendStatus(reviewDeleted ? 200 : 400);
   } catch (e) {
     next(e);
   }  

@@ -73,7 +73,7 @@ module.exports.getAllMovies = async (page, perPage) => {
             reviewCount: { $sum: 1 },
             averageScore: { $avg: '$reviews.score' }
         }}
-      ]).limit(perPage).skip(perPage*page);
+      ]).sort('_id').skip(perPage*(page-1)).limit(perPage);
       for (let i = 0; i < movieDetail.length; i++) {
         if (!movieDetail[i].averageScore) {
             movieDetail[i].reviewCount = movieDetail[i].averageScore = 0;
@@ -114,9 +114,13 @@ module.exports.deleteMovieById = async (movieId) => {
 module.exports.search = async (page, perPage, query) => {
   try {
     if (query) {
-      return await Movie.find({ $text: { $search: query } }, { score: { $meta: 'textScore' }}).sort({ score: { $meta: 'textScore'}}).limit(perPage).skip(perPage*page).lean();
+      return await Movie.find({ $text: { $search: query } }, { searchScore: { $meta: 'textScore' }})
+      .sort({ searchScore: { $meta: "textScore" } })
+      .skip(perPage*(page-1))
+      .limit(perPage)
+      .lean();
     } else {
-      return await Movie.find().limit(perPage).skip(perPage*page).lean();
+      return await Movie.find().skip(perPage*(page-1)).limit(perPage).lean();
     }
   } catch (e) {
     throw e;

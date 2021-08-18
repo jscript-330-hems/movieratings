@@ -49,7 +49,7 @@ describe("/movies", () => {
                 const res = await request(server).post("/movies").send(movie1);
                 expect(res.statusCode).toEqual(401);
             });
-              it('should send 401 with a bad token', async () => {
+            it('should send 401 with a bad token', async () => {
                 const res = await request(server)
                     .post("/movies")
                     .set('Authorization', 'Bearer BAD')
@@ -125,17 +125,17 @@ describe("/movies", () => {
                 expect(res.statusCode).toEqual(200);
                 expect(res.body[0]).toMatchObject({title: 'Movie 1'});
             });
-        });
-        it("should return two matching movies", async () => {
-            const res = await request(server).get("/movies/search?query=Drama");
-            expect(res.statusCode).toEqual(200);
-            expect(res.body[0]).toMatchObject({ title: 'Movie 1' });
-            expect(res.body[1]).toMatchObject({ title: 'Movie 2' });
-        });
-        it("should return an empty array if no match", async () => {
-            const res = await request(server).get("/movies/search?query=randomSearchTerm");
-            expect(res.statusCode).toEqual(200);
-            expect(res.body).toHaveLength(0);
+            it("should return two matching movies", async () => {
+                const res = await request(server).get("/movies/search?query=Drama");
+                expect(res.statusCode).toEqual(200);
+                expect(res.body[0]).toMatchObject({ title: 'Movie 1' });
+                expect(res.body[1]).toMatchObject({ title: 'Movie 2' });
+            });
+            it("should return an empty array if no match", async () => {
+                const res = await request(server).get("/movies/search?query=randomSearchTerm");
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toHaveLength(0);
+            });
         });
     });
 
