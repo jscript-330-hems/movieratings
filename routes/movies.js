@@ -23,8 +23,8 @@ router.get("/:id/theaters", async (req, res, next) => {
 router.get("/search", async (req, res, next) => {
     try {
       let { page, perPage, query } = req.query;
-      page = page ? Number(page) : 0;
-      perPage = perPage ? Number(perPage) : 5;
+      page = page ? Number(page) : 1;
+      perPage = perPage ? Number(perPage) : 10;
       const movies = await movieDAO.search(page, perPage, query);
       res.json(movies);
     } catch (e) {
@@ -49,8 +49,8 @@ router.get("/:id", async (req, res, next) => {
 // Read - All movies
 router.get("/", async (req, res, next) => {
   let { page, perPage } = req.query;
-  page = page ? Number(page) : 0;
-  perPage = perPage ? Number(perPage) : 5;
+  page = page ? Number(page) : 1;
+  perPage = perPage ? Number(perPage) : 10;
   try {
     const savedMovies = await movieDAO.getAllMovies(page, perPage);
     res.json(savedMovies);
