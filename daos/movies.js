@@ -115,7 +115,7 @@ module.exports.search = async (page, perPage, query) => {
   try {
     if (query) {
       return await Movie.find({ $text: { $search: query } }, { searchScore: { $meta: 'textScore' }})
-      .sort('searchScore _id')
+      .sort({ searchScore: { $meta: "textScore" } })
       .skip(perPage*(page-1))
       .limit(perPage)
       .lean();
