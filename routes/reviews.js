@@ -36,9 +36,7 @@ router.delete("/:id", isAuthorized, isAdmin, async (req, res, next) => {
   const reviewId = req.params.id;
   try {
     const reviewDeleted = await reviewsDAO.deleteReview(reviewId);
-    if (reviewDeleted) {
-      res.sendStatus(success ? 200 : 400);
-    }
+    res.sendStatus(reviewDeleted ? 200 : 400);
   } catch (e) {
     next(e);
   }  

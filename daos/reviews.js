@@ -28,9 +28,14 @@ module.exports.getReview = async (movieId) => {
 // }
 
 module.exports.deleteReview = async (reviewId) => {
-  if (!mongoose.Types.ObjectId.isValid({ reviewId })) {
+  if (!mongoose.Types.ObjectId.isValid(reviewId)) {
     return false
+  } else {
+    try {
+      await Review.deleteOne({ _id: reviewId });
+      return true;
+    } catch (e) {
+      throw e;
+    }
   }
-  await Review.deleteOne({ reviewId });
-  return true
 }
