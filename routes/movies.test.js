@@ -49,7 +49,7 @@ describe("/movies", () => {
                 const res = await request(server).post("/movies").send(movie1);
                 expect(res.statusCode).toEqual(401);
             });
-              it('should send 401 with a bad token', async () => {
+            it('should send 401 with a bad token', async () => {
                 const res = await request(server)
                     .post("/movies")
                     .set('Authorization', 'Bearer BAD')

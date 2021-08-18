@@ -8,6 +8,9 @@ module.exports.createReview = async (review) => {
 }
 
 module.exports.getReview = async (movieId) => {
+  if (!mongoose.Types.ObjectId.isValid(movieId)) {
+    return null
+  }
   return await Review.find({ movieId }).lean()
 }
 
