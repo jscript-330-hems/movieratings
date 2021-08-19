@@ -20,8 +20,10 @@ router.get('/', async (req, res, next) => {
 router.get('/:id/movies', async (req, res, next) => {
   try {
     const movies = await theaterDAO.getMoviesByTheaterId(req.params.id);
-    if (!movies || movies.length === 0) {
-      res.status(404).send('Theater not found');    
+    if (!movies) {
+      res.status(400).send('Invalid ID');    
+    } else if (movies.length === 0) {
+      res.status(404).send('Theater not found');
     } else {
       res.json(movies);
     }
