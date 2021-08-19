@@ -103,9 +103,9 @@ describe("/reviews", () => {
                 expect(res.body).toHaveLength(2);
                 expect(res.body.includes(savedMovies[0]._id));
             });
-            it('should send 404 with bad theater ID', async () => {
+            it('should send 400 with invalid theater ID', async () => {
                 const res = await request(server).get("/theaters/12345/movies");
-                expect(res.statusCode).toEqual(404);
+                expect(res.statusCode).toEqual(400);
             });
             it('should send 404 with non-existing theater ID', async () => {
                 const res = await request(server).get("/theaters/6111a815bf04188d7ccdb099/movies");
