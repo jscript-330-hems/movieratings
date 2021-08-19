@@ -20,10 +20,10 @@ router.get('/', async (req, res, next) => {
 router.get('/:id/movies', async (req, res, next) => {
   try {
     const movies = await theaterDAO.getMoviesByTheaterId(req.params.id);
-    if (movies) {
-      res.json(movies);
+    if (!movies || movies.length === 0) {
+      res.status(404).send('Theater not found');    
     } else {
-      res.status(404).send('Theater not found');
+      res.json(movies);
     }
   } catch (e) {
     next(e);
@@ -31,12 +31,12 @@ router.get('/:id/movies', async (req, res, next) => {
 })
 
 // Get theaters by zip code
-router.get('/search', async (req, res, next) => {
+router.get('/zipcode/:id', async (req, res, next) => {
   try {
-    let { page, perPage, query } = req.query;
-    page = page ? Number(page): 0;
+    let { page, perPage } = req.query;
+    page = page ? Number(page): 1;
     perPage = perPage ? Number(perPage): 10;
-    const theaters = await theaterDAO.searchByZip(page, perPage, query);
+    const theaters = await theaterDAO.searchByZip(page, perPage, req.params.id);
     res.json(theaters);
   } catch (e) {
     next(e);
