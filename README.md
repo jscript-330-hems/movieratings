@@ -29,8 +29,10 @@ The following are the proposed routes we intend to implement.  Others had been c
 | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | GET    | /theaters            | Displays a list of all theaters                                                                                      |
 | GET    | /theaters/:id/movies | Displays movies currently playing at the specified theater and aggregated movie data (average reviews, review count) |
-| GET    | /theaters?zipcode    | Displays a list of theaters by zip code                                                                              |
-| POST   | /theaters <span style="color:red">*</span>          | Creates a theater                                                                                                    |
+| GET    | /theaters/zipcode/:id    | Displays a list of theaters by zip code                                                                              |
+| POST   | /theaters <span style="color:red">**</span>          | Creates a theater                                                                                                    |
+| PUT   | /theaters <span style="color:red">**</span>          | Updates a theater                                                                                                    |
+| DELETE   | /theaters <span style="color:red">**</span>          | Deletes a theater                                                                                                    |
 
 
 ## Reviews

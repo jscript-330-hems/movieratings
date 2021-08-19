@@ -9,42 +9,42 @@ module.exports.getAllTheaters = async () => {
 
 
 module.exports.getMoviesByTheaterId = async (theaterId) => {
-    try {
-        const moviesInfo = await Theater.aggregate([
-            { $match: { _id: mongoose.Types.ObjectId(theaterId) }},
-            { $unwind: '$movies'},
-            { $lookup: { 
-                from: 'movies',
-                localField: 'movies',
-                foreignField: '_id',
-                as: 'movieInfo'
-            }},
-            { $unwind: '$movieInfo' },
-            { $group: { 
-                _id: '$movieInfo._id', 
-                title: { $first: '$movieInfo.title' },
-                actors: { $first: '$movieInfo.actors' }, 
-                genre: { $first: '$movieInfo.genre' },
-                synopsis: { $first: '$movieInfo.synopsis' },
-                rating: { $first: '$movieInfo.rating' },
-                releaseYear: { $first: '$movieInfo.releaseYear' },
-                moviePicUrl: { $first: '$movieInfo.moviePicUrl' }
-            }}
-        ]);
-        return moviesInfo;
-        }
-    catch (e) {
-        throw e;
+    if (!mongoose.Types.ObjectId.isValid(theaterId)) {
+        return null;
+    } else {
+        try {
+            const moviesInfo = await Theater.aggregate([
+                { $match: { _id: mongoose.Types.ObjectId(theaterId) }},
+                { $unwind: '$movies'},
+                { $lookup: { 
+                    from: 'movies',
+                    localField: 'movies',
+                    foreignField: '_id',
+                    as: 'movieInfo'
+                }},
+                { $unwind: '$movieInfo' },
+                { $group: { 
+                    _id: '$movieInfo._id', 
+                    title: { $first: '$movieInfo.title' },
+                    actors: { $first: '$movieInfo.actors' }, 
+                    genre: { $first: '$movieInfo.genre' },
+                    synopsis: { $first: '$movieInfo.synopsis' },
+                    rating: { $first: '$movieInfo.rating' },
+                    releaseYear: { $first: '$movieInfo.releaseYear' },
+                    moviePicUrl: { $first: '$movieInfo.moviePicUrl' }
+                }}
+            ]);
+            return moviesInfo;
+            }
+        catch (e) {
+            throw e;
     }
 }
+}
 
-module.exports.searchByZip = async (page, perPage, query) => {
+module.exports.searchByZip = async (page, perPage, zipcode) => {
     try {
-        if (query) {
-            return await Theater.find({ $text: { $search: query } }, { score: { $meta: 'textScore' }}).sort({ score: { $meta: 'textScore' }}).limit(perPage).skip(perPage*page).lean();
-        } else {
-            return await Theater.find().limit(perPage).skip(perPage*page).lean();
-        } 
+        return await Theater.find({ zip: zipcode }).skip(perPage*(page-1)).limit(perPage).lean()
     } catch (e) {
         throw e;
     }
@@ -62,9 +62,27 @@ module.exports.createTheater = async (theaterData) => {
 }
 
 module.exports.updateTheaterById = async (theaterId, newObj) =>  {
-    return await Theater.updateOne({ _id: theaterId }, newObj);
+    if (!mongoose.Types.ObjectId.isValid(theaterId)) {
+        return false;
+    } else {
+      try {
+        await Theater.updateOne({ _id: theaterId }, newObj);
+        return true;
+      }  catch (e) {
+        throw e;
+      }
+    }
 }
 
 module.exports.deleteTheaterById = async (theaterId) => {
-    return await Theater.deleteOne({ _id: theaterId });
+    if (!mongoose.Types.ObjectId.isValid(theaterId)) {
+        return false;
+    } else {
+      try {
+        await await Theater.deleteOne({ _id: theaterId });
+        return true;
+      }  catch (e) {
+        throw e;
+      }
+    }
 }
