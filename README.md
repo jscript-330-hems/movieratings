@@ -7,7 +7,27 @@ In the past one and a half sprint periods, our group has completed the tasks req
 On the front-end, we have made wireframes to plan out the visual direction of our pages. We currently have a simplistic site that allows users to sign in or create an account.  An initial menu displays based on the logged in/out state and offers a link to admins only.  Currently the home page displays a movie search, which will be developed more to include a theater search option. Through text search, a user can retrieve items from a movies collection that includes the movie title, genre and synopsis.  A movie listings component has also been started, showing aggregated review info and other movie details. We plan on creating additional pages for movie and theater details, a page with a form to add a review, and a page with a form add or update a theater when the user has the admin role.
 
 # Access Steps
+Hosting Information
+Database: Mongodb Atlas 
+Frontend: Heroku - https://js330-movieratings-client.herokuapp.com/ (work in progress)
+Backend: Heroku - https://js330-movieratings.herokuapp.com/
 
+APIs Example: 
+GET Movies:
+https://js330-movieratings.herokuapp.com/movies
+GET Theaters:
+https://js330-movieratings.herokuapp.com/theaters
+GET Reviews:
+https://js330-movieratings.herokuapp.com/reviews/movie/610f1e2eec021067b1c4aa55
+POST /signup (req.body provide JSON email and password)
+https://js330-movieratings.herokuapp.com/login/signup
+POST /login (req.body provide JSON email and password)
+https://js330-movieratings.herokuapp.com/login
+
+Note: For more information about API endpoints, refer to Routes section in README.
+
+Frontend: 
+https://js330-movieratings-client.herokuapp.com/#/
 
 # Project Description
 For our final project, our group aims to create a comprehensive platform that optimizes movie viewers’ experiences and movie theaters’ showings. Through text search, users will be able to find movies by searching movie titles, genres, and potentially actors’ names. The front-end of the web application will include a search bar that will return a list of the movie’s name and details. The web page will also include a search bar for the user to search theaters by zip code. Through authentication middleware, users will signup, login, and logout of their accounts. Authenticated users will be taken to an additional page if they wish to submit a movie review. We will employ aggregated data for the average review and review count of movies. Through our API, moviegoers will be able to make better decisions when choosing what movies to watch.
