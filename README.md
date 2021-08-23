@@ -12,22 +12,22 @@ Database: Mongodb Atlas</br>
 Frontend: Heroku - https://js330-movieratings-client.herokuapp.com/ (work in progress)</br>
 Backend: Heroku - https://js330-movieratings.herokuapp.com/</br>
 
-APIs Example: 
-GET Movies:
-https://js330-movieratings.herokuapp.com/movies
-GET Theaters:
-https://js330-movieratings.herokuapp.com/theaters
-GET Reviews:
-https://js330-movieratings.herokuapp.com/reviews/movie/610f1e2eec021067b1c4aa55
-POST /signup (req.body provide JSON email and password)
-https://js330-movieratings.herokuapp.com/login/signup
-POST /login (req.body provide JSON email and password)
-https://js330-movieratings.herokuapp.com/login
+APIs Example:</br>
+GET Movies:</br>
+https://js330-movieratings.herokuapp.com/movies</br>
+GET Theaters:</br>
+https://js330-movieratings.herokuapp.com/theaters</br>
+GET Reviews:</br>
+https://js330-movieratings.herokuapp.com/reviews/movie/610f1e2eec021067b1c4aa55</br>
+POST /signup (req.body provide JSON email and password)</br>
+https://js330-movieratings.herokuapp.com/login/signup</br>
+POST /login (req.body provide JSON email and password)</br>
+https://js330-movieratings.herokuapp.com/login</br>
 
-Note: For more information about API endpoints, refer to Routes section in README.
+Note: For more information about API endpoints, refer to Routes section in README.</br>
 
-Frontend: 
-https://js330-movieratings-client.herokuapp.com/#/
+Frontend:</br>
+https://js330-movieratings-client.herokuapp.com/#/</br>
 
 # Project Description
 For our final project, our group aims to create a comprehensive platform that optimizes movie viewers’ experiences and movie theaters’ showings. Through text search, users will be able to find movies by searching movie titles, genres, and potentially actors’ names. The front-end of the web application will include a search bar that will return a list of the movie’s name and details. The web page will also include a search bar for the user to search theaters by zip code. Through authentication middleware, users will signup, login, and logout of their accounts. Authenticated users will be taken to an additional page if they wish to submit a movie review. We will employ aggregated data for the average review and review count of movies. Through our API, moviegoers will be able to make better decisions when choosing what movies to watch.
