@@ -24,7 +24,7 @@ https://js330-movieratings.herokuapp.com/login/signup</br>
 POST /login (req.body provide JSON email and password)</br>
 https://js330-movieratings.herokuapp.com/login</br>
 
-Note: For more information about API endpoints, refer to Routes section in README.</br>
+Note: For more information about API endpoints, refer to <a href="https://github.com/jscript-330-hems/movieratings#routes">Routes</a> section in README.</br>
 
 Frontend:</br>
 https://js330-movieratings-client.herokuapp.com/#/</br>
