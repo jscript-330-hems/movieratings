@@ -8,7 +8,7 @@ On the front-end, we have made wireframes to plan out the visual direction of ou
 
 # Access Steps
 Hosting Information
-Database: Mongodb Atlas 
+Database: Mongodb Atlas
 Frontend: Heroku - https://js330-movieratings-client.herokuapp.com/ (work in progress)
 Backend: Heroku - https://js330-movieratings.herokuapp.com/
 
