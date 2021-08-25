@@ -4,6 +4,9 @@ const Review = require('../models/review')
 module.exports = {}
 
 module.exports.createReview = async (review) => {
+  if (!mongoose.Types.ObjectId.isValid(review.movieId)) {
+    return null
+  }
   return await Review.create(review)
 }
 
