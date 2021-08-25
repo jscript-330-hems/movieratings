@@ -1,6 +1,34 @@
 # movieratings
 Javascript 330 Final Project - Movie Ratings
 
+# Week 8 Progress Report
+In the past one and a half sprint periods, our group has completed the tasks required to deploy a basic version of our API and our back-end database. First, we created models and DAOs for users, movies, theaters, and reviews. We have created routes for the login, movies, theaters and reviews. The login routes allow a  user to signup, login, logout, and change their password. The movie routes allow users to create, update, and delete movies, as well as, find a movie by the theater or movie’s ID, search for movies, and get all movies. The theater routes allow users with admin privileges to create, update, and delete theaters. The theater routes also allow any user to get all theaters, get theaters by a movie or theater’s ID, and search for theaters by zip code. The review routes allow users to get reviews by movie ID and create and delete a review with admin privileges. We used middleware to employ authentication and authorization. The middleware is used to validate credentials and associate roles and users. After ensuring that the routes worked correctly, we developed unit tests for each route. We are still in the process of adding more error handling through the unit test, adding more demo data.
+
+On the front-end, we have made wireframes to plan out the visual direction of our pages. We currently have a simplistic site that allows users to sign in or create an account.  An initial menu displays based on the logged in/out state and offers a link to admins only.  Currently the home page displays a movie search, which will be developed more to include a theater search option. Through text search, a user can retrieve items from a movies collection that includes the movie title, genre and synopsis.  A movie listings component has also been started, showing aggregated review info and other movie details. We plan on creating additional pages for movie and theater details, a page with a form to add a review, and a page with a form add or update a theater when the user has the admin role.
+
+# Access Steps
+Hosting Information</br>
+Database: Mongodb Atlas</br>
+Frontend: Heroku - https://js330-movieratings-client.herokuapp.com/ (work in progress)</br>
+Backend: Heroku - https://js330-movieratings.herokuapp.com/</br>
+
+APIs Example:</br>
+GET Movies:</br>
+https://js330-movieratings.herokuapp.com/movies</br>
+GET Theaters:</br>
+https://js330-movieratings.herokuapp.com/theaters</br>
+GET Reviews:</br>
+https://js330-movieratings.herokuapp.com/reviews/movie/610f1e2eec021067b1c4aa55</br>
+POST /signup (req.body provide JSON email and password)</br>
+https://js330-movieratings.herokuapp.com/login/signup</br>
+POST /login (req.body provide JSON email and password)</br>
+https://js330-movieratings.herokuapp.com/login</br>
+
+Note: For more information about API endpoints, refer to <a href="https://github.com/jscript-330-hems/movieratings#routes">Routes</a> section in README.</br>
+
+Frontend:</br>
+https://js330-movieratings-client.herokuapp.com/#/</br>
+
 # Project Description
 For our final project, our group aims to create a comprehensive platform that optimizes movie viewers’ experiences and movie theaters’ showings. Through text search, users will be able to find movies by searching movie titles, genres, and potentially actors’ names. The front-end of the web application will include a search bar that will return a list of the movie’s name and details. The web page will also include a search bar for the user to search theaters by zip code. Through authentication middleware, users will signup, login, and logout of their accounts. Authenticated users will be taken to an additional page if they wish to submit a movie review. We will employ aggregated data for the average review and review count of movies. Through our API, moviegoers will be able to make better decisions when choosing what movies to watch.
 
