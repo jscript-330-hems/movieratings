@@ -122,11 +122,11 @@ describe("/reviews", () => {
 
     describe("POST /", () => {
       it("should reject a bad id", async () => {
-        testReview.movieId = 12345;
+        testReview.movieId = '12345';
         const res = await request(server)
           .post("/reviews")
           .set("Authorization", "Bearer " + token1)
-          .send();
+          .send(testReview);
         expect(res.statusCode).toEqual(400);
       });
       it("should send 200 and create review object", async () => {
