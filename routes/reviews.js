@@ -25,7 +25,11 @@ router.post("/", isAuthorized, async (req, res, next) => {
   const review = req.body;
   try {
     const reviewCreated = await reviewsDAO.createReview(review);
-    res.json(reviewCreated);
+    if (reviewCreated) {
+      res.json(reviewCreated);
+    } else {
+      res.sendStatus(400);
+    }
   } catch (e) {
     next(e);
   }

@@ -103,7 +103,6 @@ describe("/reviews", () => {
       password: "iamsuperuser",
     };
     const testReview = {
-      movieId: 12345,
       score: 5,
       review: "This is a review of movie1",
     };
@@ -120,27 +119,29 @@ describe("/reviews", () => {
       const resp2 = await request(server).post("/login").send(testAdmin);
       adminToken = resp2.body.token;
     });
-    // Tests not passing
-    // describe("POST /", () => {
-    //   it("should reject a bad id", async () => {
-    //     const res = await request(server)
-    //       .post("/reviews")
-    //       .set("Authorization", "Bearer " + token1)
-    //       .send();
-    //     expect(res.statusCode).toEqual(400);
-    //   });
-    //   it("should send 200 and create review object", async () => {
-    //     const res = await request(server)
-    //       .post("/reviews")
-    //       .set("Authorization", "Bearer " + token1)
-    //       .send(testReview);
-    //     expect(res.statusCode).toEqual(200);
-    //     const newReview = await Review.findOne({ _id: res.body._id });
-    //     expect(newReview).toMatchObject({
-    //       movieId: 12345,
-    //     });
-    //   });
-    // });
+
+    describe("POST /", () => {
+      it("should reject a bad id", async () => {
+        testReview.movieId = '12345';
+        const res = await request(server)
+          .post("/reviews")
+          .set("Authorization", "Bearer " + token1)
+          .send(testReview);
+        expect(res.statusCode).toEqual(400);
+      });
+      it("should send 200 and create review object", async () => {
+        testReview.movieId = savedMovies[0]._id;
+        const res = await request(server)
+          .post("/reviews")
+          .set("Authorization", "Bearer " + token1)
+          .send(testReview);
+        expect(res.statusCode).toEqual(200);
+        const newReview = await Review.findOne({ _id: res.body._id });
+        expect(newReview).toMatchObject({
+          movieId: savedMovies[0]._id,
+        });
+      });
+    });
 
     describe("DELETE /:id", () => {
       it("should reject a bad id", async () => {
